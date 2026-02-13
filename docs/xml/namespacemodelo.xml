@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.16.1" xml:lang="es">
+  <compounddef id="namespacemodelo" kind="namespace" language="C#">
+    <compoundname>modelo</compoundname>
+    <innerclass refid="classmodelo_1_1Usuario" prot="public">modelo::Usuario</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modelo/Usuario.cs" line="1" column="1"/>
+  </compounddef>
+</doxygen>

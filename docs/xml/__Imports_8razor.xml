@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.16.1" xml:lang="es">
+  <compounddef id="__Imports_8razor" kind="file" language="C++">
+    <compoundname>_Imports.razor</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">@using<sp/>System.Net.Http</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>System.Net.Http.Json</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>Microsoft.AspNetCore.Components.Forms</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>Microsoft.AspNetCore.Components.Routing</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>Microsoft.AspNetCore.Components.Web</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>Microsoft.AspNetCore.Components.Web.Virtualization</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>Microsoft.AspNetCore.Components.WebAssembly.Http</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>Microsoft.JSInterop</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>clienteWeb</highlight></codeline>
+<codeline><highlight class="normal">@using<sp/>clienteWeb.Layout</highlight></codeline>
+    </programlisting>
+    <location file="clienteWeb/_Imports.razor"/>
+  </compounddef>
+</doxygen>

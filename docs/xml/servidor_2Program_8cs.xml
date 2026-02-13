@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.16.1" xml:lang="es">
+  <compounddef id="servidor_2Program_8cs" kind="file" language="C#">
+    <compoundname>Program.cs</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="servidor_2Program_8cs_1a2f78352277081c620fd4cf92a5ce15e5" prot="public" static="no" mutable="no">
+        <type>var</type>
+        <definition>var builder</definition>
+        <argsstring></argsstring>
+        <name>builder</name>
+        <initializer>= WebApplication.CreateBuilder(args)</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="1" column="5" bodyfile="servidor/Program.cs" bodystart="1" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="servidor_2Program_8cs_1a7b225fcb720e4d5ed2bbf60e28a25e6d" prot="public" static="no" mutable="no">
+        <type>var</type>
+        <definition>var app</definition>
+        <argsstring></argsstring>
+        <name>app</name>
+        <initializer>= builder.Build()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="7" column="5" bodyfile="servidor/Program.cs" bodystart="7" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="servidor_2Program_8cs_1a228eff3516389a410c5795dda18c9b30" prot="public" static="no" mutable="no">
+        <type>var</type>
+        <definition>var summaries</definition>
+        <argsstring></argsstring>
+        <name>summaries</name>
+        <initializer>              = new[]
+{
+    &quot;Freezing&quot;, &quot;Bracing&quot;, &quot;Chilly&quot;, &quot;Cool&quot;, &quot;Mild&quot;, &quot;Warm&quot;, &quot;Balmy&quot;, &quot;Hot&quot;, &quot;Sweltering&quot;, &quot;Scorching&quot;
+}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="17" column="5" bodyfile="servidor/Program.cs" bodystart="17" bodyend="20"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="servidor_2Program_8cs_1a0cb2e333d20993187d584d403e6cb328" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>builder.Services.</type>
+        <definition>builder.Services. AddOpenApi</definition>
+        <argsstring>()</argsstring>
+        <name>AddOpenApi</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="5" column="16" declfile="servidor/Program.cs" declline="5" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="servidor_2Program_8cs_1a79a944c7f0e25196ca3c5a8638b919b9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>if</definition>
+        <argsstring>(app.Environment.IsDevelopment())</argsstring>
+        <name>if</name>
+        <param>
+          <type>app.Environment.</type>
+          <declname>IsDevelopment</declname>
+          <array>()</array>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="10" column="1" bodyfile="servidor/Program.cs" bodystart="10" bodyend="13"/>
+      </memberdef>
+      <memberdef kind="function" id="servidor_2Program_8cs_1aa4d447fc3129a3aa301d736b8bd04ae9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>app.</type>
+        <definition>app. UseHttpsRedirection</definition>
+        <argsstring>()</argsstring>
+        <name>UseHttpsRedirection</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="15" column="4" declfile="servidor/Program.cs" declline="15" declcolumn="4"/>
+      </memberdef>
+      <memberdef kind="function" id="servidor_2Program_8cs_1a36eb1b274658a1df13be122fcb8da327" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>app.</type>
+        <definition>app. MapGet</definition>
+        <argsstring>(&quot;/weatherforecast&quot;,()=&gt; { var forecast=Enumerable.Range(1, 5).Select(index=&gt; new WeatherForecast(DateOnly.FromDateTime(DateTime.Now.AddDays(index)), Random.Shared.Next(-20, 55), summaries[Random.Shared.Next(summaries.Length)])) .ToArray();return forecast;}) .WithName(&quot;GetWeatherForecast&quot;)</argsstring>
+        <name>MapGet</name>
+        <param>
+          <type>&quot;/weatherforecast&quot;</type>
+        </param>
+        <param>
+          <type>()</type>
+        </param>
+        <param>
+          <type>{ var forecast=Enumerable.Range(1, 5).Select(index=&gt; new WeatherForecast(DateOnly.FromDateTime(DateTime.Now.AddDays(index)), Random.Shared.Next(-20, 55), summaries[Random.Shared.Next(summaries.Length)])) .ToArray();return forecast;}</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="22" column="4" declfile="servidor/Program.cs" declline="22" declcolumn="4"/>
+      </memberdef>
+      <memberdef kind="function" id="servidor_2Program_8cs_1aaa3dbf02e269c3ef7e8546d290c6b3dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>app.</type>
+        <definition>app. Run</definition>
+        <argsstring>()</argsstring>
+        <name>Run</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="36" column="4" declfile="servidor/Program.cs" declline="36" declcolumn="4"/>
+      </memberdef>
+      <memberdef kind="function" id="servidor_2Program_8cs_1ad93e1344caac29dfe0e8ec6ec9833753" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>record</type>
+        <definition>record WeatherForecast</definition>
+        <argsstring>(DateOnly Date, int TemperatureC, string? Summary)</argsstring>
+        <name>WeatherForecast</name>
+        <param>
+          <type>DateOnly</type>
+          <declname>Date</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>TemperatureC</declname>
+        </param>
+        <param>
+          <type>string?</type>
+          <declname>Summary</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="servidor/Program.cs" line="38" column="8" bodyfile="servidor/Program.cs" bodystart="38" bodyend="41"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal">var<sp/>builder<sp/>=<sp/>WebApplication.CreateBuilder(args);</highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>services<sp/>to<sp/>the<sp/>container.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Learn<sp/>more<sp/>about<sp/>configuring<sp/>OpenAPI<sp/>at<sp/>https://aka.ms/aspnet/openapi</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal">builder.Services.AddOpenApi();</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal">var<sp/>app<sp/>=<sp/>builder.Build();</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Configure<sp/>the<sp/>HTTP<sp/>request<sp/>pipeline.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(app.Environment.IsDevelopment())</highlight></codeline>
+<codeline lineno="11"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/>app.MapOpenApi();</highlight></codeline>
+<codeline lineno="13"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">app.UseHttpsRedirection();</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal">var<sp/>summaries<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal">[]</highlight></codeline>
+<codeline lineno="18"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;Freezing&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Bracing&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Chilly&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Cool&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Mild&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Warm&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Balmy&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Hot&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Sweltering&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;Scorching&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal">app.MapGet(</highlight><highlight class="stringliteral">&quot;/weatherforecast&quot;</highlight><highlight class="normal">,<sp/>()<sp/>=&gt;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>var<sp/>forecast<sp/>=<sp/><sp/>Enumerable.Range(1,<sp/>5).Select(index<sp/>=&gt;</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>WeatherForecast</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>DateOnly.FromDateTime(DateTime.Now.AddDays(index)),</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Random.Shared.Next(-20,<sp/>55),</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>summaries[Random.Shared.Next(summaries.Length)]</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>))</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.ToArray();</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>forecast;</highlight></codeline>
+<codeline lineno="33"><highlight class="normal">})</highlight></codeline>
+<codeline lineno="34"><highlight class="normal">.WithName(</highlight><highlight class="stringliteral">&quot;GetWeatherForecast&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">app.Run();</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">record<sp/>WeatherForecast(DateOnly<sp/>Date,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>TemperatureC,<sp/></highlight><highlight class="keywordtype">string</highlight><highlight class="normal">?<sp/>Summary)</highlight></codeline>
+<codeline lineno="39"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>TemperatureF<sp/>=&gt;<sp/>32<sp/>+<sp/>(int)(TemperatureC<sp/>/<sp/>0.5556);</highlight></codeline>
+<codeline lineno="41"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="servidor/Program.cs"/>
+  </compounddef>
+</doxygen>
