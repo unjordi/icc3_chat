@@ -153,6 +153,7 @@
     <value><![CDATA[*/obj/*]]></value>
     <value><![CDATA[*/bin/*]]></value>
     <value><![CDATA[*/lib/*]]></value>
+    <value><![CDATA[*/doxygen-awesome-css/*]]></value>
   </option>
   <option  id='EXCLUDE_SYMBOLS' default='yes' type='stringlist'>
   </option>
@@ -262,13 +263,13 @@
   <option  id='EXTERNAL_SEARCH_ID' default='yes' type='string'><value><![CDATA[]]></value></option>
   <option  id='EXTRA_SEARCH_MAPPINGS' default='yes' type='stringlist'>
   </option>
-  <option  id='GENERATE_LATEX' default='no' type='bool'><value>NO</value></option>
+  <option  id='GENERATE_LATEX' default='yes' type='bool'><value>YES</value></option>
   <option  id='LATEX_OUTPUT' default='yes' type='string'><value><![CDATA[latex]]></value></option>
-  <option  id='LATEX_CMD_NAME' default='yes' type='string'><value><![CDATA[]]></value></option>
+  <option  id='LATEX_CMD_NAME' default='no' type='string'><value><![CDATA[lualatex]]></value></option>
   <option  id='MAKEINDEX_CMD_NAME' default='yes' type='string'><value><![CDATA[makeindex]]></value></option>
   <option  id='LATEX_MAKEINDEX_CMD' default='yes' type='string'><value><![CDATA[makeindex]]></value></option>
-  <option  id='COMPACT_LATEX' default='yes' type='bool'><value>NO</value></option>
-  <option  id='PAPER_TYPE' default='yes' type='string'><value>a4</value></option>
+  <option  id='COMPACT_LATEX' default='no' type='bool'><value>YES</value></option>
+  <option  id='PAPER_TYPE' default='no' type='string'><value>letter</value></option>
   <option  id='EXTRA_PACKAGES' default='yes' type='stringlist'>
   </option>
   <option  id='LATEX_HEADER' default='yes' type='string'><value><![CDATA[]]></value></option>
@@ -280,7 +281,7 @@
   <option  id='PDF_HYPERLINKS' default='yes' type='bool'><value>YES</value></option>
   <option  id='USE_PDFLATEX' default='yes' type='bool'><value>YES</value></option>
   <option  id='LATEX_BATCHMODE' default='yes' type='string'><value>NO</value></option>
-  <option  id='LATEX_HIDE_INDICES' default='yes' type='bool'><value>NO</value></option>
+  <option  id='LATEX_HIDE_INDICES' default='no' type='bool'><value>YES</value></option>
   <option  id='LATEX_BIB_STYLE' default='yes' type='string'><value><![CDATA[plainnat]]></value></option>
   <option  id='LATEX_EMOJI_DIRECTORY' default='yes' type='string'><value><![CDATA[]]></value></option>
   <option  id='GENERATE_RTF' default='yes' type='bool'><value>NO</value></option>

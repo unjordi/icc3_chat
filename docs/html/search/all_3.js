@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['dependency_0',['npm/xpm dependency',['../dir_1a55803d4667afd0b5d398f378b65f85.html#autotoc_md7',1,'']]],
-  ['doxygen_20awesome_1',['Doxygen Awesome',['../dir_1a55803d4667afd0b5d398f378b65f85.html#autotoc_md0',1,'']]]
+  ['usuario_0',['Usuario',['../classmodelo_1_1Usuario.html',1,'modelo.Usuario'],['../classmodelo_1_1Usuario.html#a21869b57a6ddd2a69b0d26689745cc10',1,'modelo.Usuario.Usuario()']]]
 ];

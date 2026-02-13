@@ -1,0 +1,11 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}icc3\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}\_\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}chat }{1}{section.1}%
+\contentsline {section}{\numberline {2}Documentación de espacios de nombres}{1}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Referencia del espacio de nombres modelo}{1}{subsection.2.1}%
+\contentsline {section}{\numberline {3}Documentación de clases}{1}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Referencia de la clase modelo.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Usuario}{1}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Descripción detallada}{2}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Documentación de constructores y destructores}{2}{subsubsection.3.1.2}%
+\contentsline {paragraph}{Usuario()}{2}{section*.4}%
+\contentsline {section}{Índice alfabético}{3}{section*.5}%
