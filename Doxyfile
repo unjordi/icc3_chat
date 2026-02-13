@@ -1449,8 +1449,10 @@ HTML_STYLESHEET        =
 # customization is desired it has to be added explicitly. For an example see the
 # documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
+#
+# tema para doxygen descargado de https://jothepro.github.io/doxygen-awesome-css/
 
-HTML_EXTRA_STYLESHEET  =
+HTML_EXTRA_STYLESHEET  = doxygen-awesome-css/doxygen-awesome.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note

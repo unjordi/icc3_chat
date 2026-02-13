@@ -48,11 +48,15 @@
   </compound>
   <compound refid="Usuario_8cs" kind="file"><name>Usuario.cs</name>
   </compound>
+  <compound refid="doxygen-awesome-css_2README_8md" kind="file"><name>README.md</name>
+  </compound>
   <compound refid="README_8md" kind="file"><name>README.md</name>
   </compound>
   <compound refid="md_README" kind="page"><name>md_README</name>
   </compound>
   <compound refid="dir_a99381db3520080ebc8283b88d795c17" kind="dir"><name>clienteWeb</name>
+  </compound>
+  <compound refid="dir_1a55803d4667afd0b5d398f378b65f85" kind="dir"><name>doxygen-awesome-css</name>
   </compound>
   <compound refid="dir_59758e85dbf10befa14703a6805da172" kind="dir"><name>clienteWeb/Layout</name>
   </compound>
