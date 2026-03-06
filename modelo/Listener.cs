@@ -1,12 +1,13 @@
 using System.Net;
 using System.Net.Sockets;
+namespace chat.modelo;
 
-class Listener
+public class Listener
 {
 	public int puerto { get; private set; } = 1111;
 	public bool Escuchando { get; private set; }
 	public Socket listener { get; set; }
-	IPAddress? ipServidor { get; set; } = IPAddress.Parse("127.0.0.1");
+	IPAddress ipServidor { get; set; } = IPAddress.Parse("127.0.0.1");
 	public Listener(int _puerto)
 	{
 		puerto = _puerto;
@@ -17,7 +18,7 @@ class Listener
 		if (Escuchando)
 			return;
 		listener.Bind(new IPEndPoint(0, puerto));
-		listener.Listen(100);
+		listener.Listen(100); //máximo 100 peticiones en la cola plz
 		listener.BeginAccept(callback, null);
 		Escuchando = true;
 	}
@@ -33,10 +34,10 @@ class Listener
 	{
 		try
 		{
-			Socket oreja = this.listener.EndAccept(asyncResult);
-			if (SocketAceptado is not null)
+			Socket socket = this.listener.EndAccept(asyncResult);
+			if (SocketAccepted is not null)
 			{
-				SocketAceptado(oreja);
+				SocketAccepted(socket);
 			}
 			this.listener.BeginAccept(callback, null);
 		}
@@ -45,6 +46,6 @@ class Listener
 			Console.WriteLine(e.Message);
 		}
 	}
-	public delegate void SocketAceptador(Socket e);
-	public event SocketAceptador? SocketAceptado;
+	public delegate void SocketAcceptedHandler(Socket e);
+	public event SocketAcceptedHandler SocketAccepted;
 }
