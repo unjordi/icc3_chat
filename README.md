@@ -29,4 +29,7 @@ si ya se ha creado el contenedor con ese nombre previamente, el siguiente comand
 docker build -f clienteTexto/Dockerfile  -t chatclientetexto . && docker rm clienteChatDocker && docker run -it  -p 1112:1112 --name clienteChatDocker chatclientetexto  
 ```
 # para ejecutar el cliente web:
-docker stop chatclienteweb && docker rm chatclienteweb && docker build -f clienteWeb/Dockerfile -t chatclienteweb . && docker run -d -p 8080:80 --name chatclienteweb chatclienteweb
+si ya se ha creado el contenedor con ese nombre previamente, el siguiente comando lo elimina antes de volverlo a crear:
+```
+ docker stop chatclienteweb && docker rm chatclienteweb && docker build -f clienteWeb/Dockerfile -t chatclienteweb . && docker run -d  -p 8080:80 -p 8081:443 --name chatclienteweb chatclienteweb
+ ```

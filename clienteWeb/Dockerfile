@@ -1,12 +1,14 @@
 # Primero, usamos la imagen base oficial  build 
 # esta se desecha al final porque queda llena de basurita
+
 # por todos los pasos de compilación.
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["./clienteWeb/clienteWeb.csproj", "clienteWeb/"]
 COPY ["./modelo/modelo.csproj", "modelo/"] 
-RUN dotnet restore clienteWeb.csproj
+RUN dotnet restore "clienteWeb/clienteWeb.csproj"
 COPY . .
+WORKDIR "/src/clienteWeb"
 RUN dotnet build clienteWeb.csproj -c Release -o /app/build
 
 FROM build AS publish
@@ -20,4 +22,4 @@ EXPOSE 80
 EXPOSE 443
 WORKDIR /usr/share/nginx/html
 COPY --from=publish /app/publish/wwwroot .
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ["./clienteWeb/nginx.conf"] /etc/nginx/nginx.conf
