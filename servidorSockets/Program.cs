@@ -4,15 +4,16 @@ using System.Text;
 using chat.modelo;
 //Argumento 1: puerto para abrir.
 //Argumento 2: máximo de clientes #TO-DO
-Conexion conexion;
-byte[] buffer;
 int puerto = 1111;
+TcpListener servidor;
 inicializar();
 
+while (true)
+{
+    TcpClient cliente = await servidor.AcceptTcpClientAsync();
+    _ = ManejarConexionAsincrona(cliente); 
+}
 
-
-Console.Read();
-//aceptado.Dispose();
 
 /*--------------métodos!-------------*/
 bool inicializar()
@@ -25,38 +26,41 @@ bool inicializar()
 		" primer argumento no es un entero. Se usará el puerto default 1111");
 		puerto = 1111; //sin esto, el tryparse le plancha un 0 al puerto.
 	}
-	Console.WriteLine("Inicializando Servidor de chat en el puerto "+
+	Console.WriteLine("Inicializando Servidor de chat en el puerto " +
 	  puerto.ToString());
-	conexion = new(puerto);
-	conexion.ConexionAceptada += 
-	  new Conexion.ManejadordeConexionAceptada(conexion_ConexionAceptada);
-	conexion.Escuchar();
+	servidor = new TcpListener(IPAddress.Any, puerto);
+	servidor.Start();
 	return true;
 }
 
-void conexion_ConexionAceptada(Socket aceptado)
+async Task ManejarConexionAsincrona(TcpClient cliente)
 {
-	Console.WriteLine($"Cliente conectado! {aceptado.RemoteEndPoint}"+ 
-	  $"a las {DateTime.Now}.");
-	while (true)
-		{
-			try
-			{
-				buffer = new byte[aceptado.SendBufferSize];
-				int longitudMensaje = aceptado.Receive(buffer);
+    using (cliente)
+	{
+		int longitudMensaje;
+		Socket aceptado = cliente.Client;
+		Console.WriteLine($"Cliente conectado! {aceptado.RemoteEndPoint}"+ 
+	      $"a las {DateTime.Now}.");
+        var stream = cliente.GetStream();
+        byte[] buffer = new byte[2048];
+        try
+        {
+            while (true)
+            {
+				longitudMensaje = await stream.ReadAsync(buffer, 0, buffer.Length);
 				if (longitudMensaje <= 0)
 				{
-					throw new SocketException();
+					break; // Cliente desconectado, hay que morir
 				}
-				//pasamos el mensaje en limpio
-				Array.Resize(ref buffer, longitudMensaje);
-				//y directo a consola, por ahora 
-				Console.WriteLine(Encoding.UTF8.GetString(buffer));
-			}
-			catch
-			{
-				System.Console.WriteLine("Cliente desconectado.");
-				return;
-			}
-		}
+                
+                Console.WriteLine($"[{aceptado.RemoteEndPoint}]:"+
+				 $"{Encoding.UTF8.GetString(buffer, 0, longitudMensaje)}");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error en la conexión: {aceptado.RemoteEndPoint}: {e.Message}");
+        }
+        Console.WriteLine($"Cliente desconectado! {aceptado.RemoteEndPoint}");
+    }
 }
