@@ -39,28 +39,30 @@ async Task ManejarConexionAsincrona(TcpClient cliente)
 	{
 		int longitudMensaje;
 		Socket aceptado = cliente.Client;
+		Console.ForegroundColor = ConsoleColor.Green;
 		Console.WriteLine($"Cliente conectado! {aceptado.RemoteEndPoint}"+ 
 	      $"a las {DateTime.Now}.");
         var stream = cliente.GetStream();
         byte[] buffer = new byte[2048];
-        try
-        {
-            while (true)
-            {
+		try
+		{
+			while (true)
+			{
 				longitudMensaje = await stream.ReadAsync(buffer, 0, buffer.Length);
 				if (longitudMensaje <= 0)
 				{
 					break; // Cliente desconectado, hay que morir
 				}
-                
-                Console.WriteLine($"[{aceptado.RemoteEndPoint}]:"+
+				Console.ForegroundColor = ConsoleColor.White;
+				Console.WriteLine($"[{aceptado.RemoteEndPoint}]:" +
 				 $"{Encoding.UTF8.GetString(buffer, 0, longitudMensaje)}");
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error en la conexión: {aceptado.RemoteEndPoint}: {e.Message}");
-        }
+			}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine($"Error en la conexión: {aceptado.RemoteEndPoint}: {e.Message}");
+		}
+		Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine($"Cliente desconectado! {aceptado.RemoteEndPoint}");
     }
 }

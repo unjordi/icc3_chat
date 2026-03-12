@@ -3,7 +3,8 @@
 # por todos los pasos de compilación.
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY clienteWeb.csproj .
+COPY ["./clienteWeb/clienteWeb.csproj", "clienteWeb/"]
+COPY ["./modelo/modelo.csproj", "modelo/"] 
 RUN dotnet restore clienteWeb.csproj
 COPY . .
 RUN dotnet build clienteWeb.csproj -c Release -o /app/build
