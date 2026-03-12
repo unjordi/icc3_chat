@@ -1,30 +1,22 @@
-﻿
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using chat.modelo;
 //Argumento 1: puerto para abrir.
 //Argumento 2: máximo de clientes #TO-DO
-Socket listener, aceptado;
+Conexion conexion;
 byte[] buffer;
-
-
-
+int puerto = 1111;
 inicializar();
-recibirCliente();
+
+
 
 Console.Read();
-listener.Close();
+//aceptado.Dispose();
 
 /*--------------métodos!-------------*/
 bool inicializar()
 {
-	listener = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-	aceptado = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-	int puerto = 1111;
-	IPEndPoint local = new(0, puerto);
-	listener.Bind(local);
-	listener.Listen(100); //máximo 100 peticiones en cola plz.
-
 	if(args.Length>0)
 	//si es un entero válido, lo asignamos
 	if (!int.TryParse(args[0], out puerto))
@@ -33,19 +25,20 @@ bool inicializar()
 		" primer argumento no es un entero. Se usará el puerto default 1111");
 		puerto = 1111; //sin esto, el tryparse le plancha un 0 al puerto.
 	}
-Console.WriteLine("Inicializando Servidor de chat en el puerto "+puerto.ToString());
+	Console.WriteLine("Inicializando Servidor de chat en el puerto "+
+	  puerto.ToString());
+	conexion = new(puerto);
+	conexion.ConexionAceptada += 
+	  new Conexion.ManejadordeConexionAceptada(conexion_ConexionAceptada);
+	conexion.Escuchar();
 	return true;
 }
 
-void recibirCliente()
+void conexion_ConexionAceptada(Socket aceptado)
 {
-	new Thread(delegate ()
-	{
-		aceptado = listener.Accept();
-		System.Console.WriteLine("cliente conectado!");
-		listener.Close();
-
-		while (true)
+	Console.WriteLine($"Cliente conectado! {aceptado.RemoteEndPoint}"+ 
+	  $"a las {DateTime.Now}.");
+	while (true)
 		{
 			try
 			{
@@ -66,8 +59,4 @@ void recibirCliente()
 				return;
 			}
 		}
-	}
-	).Start();
-	aceptado.Close(); 
-	return ;
 }
