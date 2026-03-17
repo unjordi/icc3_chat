@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "modelo", "modelo\modelo.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clienteWeb", "clienteWeb\clienteWeb.csproj", "{5E0EED11-B2B1-40CC-75D3-96B48286866B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "servidor", "servidorHttp\servidor.csproj", "{9064B4AF-78AD-9CDB-C5CC-9241FD512A74}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "servidorSockets", "servidorSockets\servidorSockets.csproj", "{F355FF83-0CBB-4485-BA72-8CD7B37B0693}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clienteTexto", "clienteTexto\clienteTexto.csproj", "{F9E61D09-88C9-42C9-A332-EB56DE5A33C0}"

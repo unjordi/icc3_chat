@@ -13,9 +13,9 @@ public class Usuario
     public Guid GUID { get; private set; }
 
     /// <summary>
-    /// Nick es el nombre de usuario.
+    /// username es el nombre de usuario.
     /// </summary>
-    public String Nick { get; set; } = "";
+    public String username { get; set; } = "";
     
     /// <summary>
     /// conexion es el socket con el que el 
@@ -26,11 +26,11 @@ public class Usuario
     /// <summary>
     /// Constructor de usuarios.
     /// </summary>
-    /// <param name="nick">El nombre de usuario.</param>
+    /// <param name="username">El nombre de usuario.</param>
     /// <param name="conexion">socket para conexion con el usuario</param>
-    public Usuario(String nick,Socket sock )
+    public Usuario(String username,Socket sock )
     {
-        this.Nick = nick;
+        this.username = username;
         conexion = sock;
         GUID = Guid.NewGuid();
     }

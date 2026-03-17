@@ -1,13 +1,17 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using chat.modelo.protocolo;
+
 //Argumento 1: puerto para conectarse.
 //Argumento 2: ip del servidor
 Socket socket;
 int puerto = 1111;
 IPAddress? ipServidor = IPAddress.Parse("127.0.0.1");
 String? mensajeCrudo = "";
-if(!inicializar())
+socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+if(! await inicializar())
 {
 	return;
 }
@@ -16,7 +20,6 @@ while (!(mensajeCrudo is null ? "" : mensajeCrudo).Equals("salir"))
 	System.Console.WriteLine("Ingrese el texto a enviar.");
 	mensajeCrudo = Console.ReadLine();
 	byte[] mensajeJson = Encoding.UTF8.GetBytes(mensajeCrudo is null ? "" : mensajeCrudo);
-
 	await socket.SendAsync(mensajeJson);
 
 }
@@ -24,7 +27,7 @@ Console.Read();
 socket.Close();
 
 
-bool inicializar()
+async Task<bool> inicializar()
 	{
 	if (args.Length == 2)
 	{
@@ -49,13 +52,18 @@ bool inicializar()
 		+$"Si no se proporcionan los dos o no se indican datos válidos, {Environment.NewLine}"
 		+$"se usarán la ip default 127.0.0.1 y el puerto default 1111. {Environment.NewLine}");
 	}
+	System.Console.Write("Ingrese el username deseado: ");
+	string? username = Console.ReadLine();
 	Console.WriteLine("Inicializando chat con el servidor "
 	+ipServidor.ToString()+" en el puerto "+puerto.ToString());
 	socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 	IPEndPoint servidor = new (ipServidor, puerto);
 	try
 	{
-		socket.Connect(servidor); 
+		socket.Connect(servidor);
+		Identify identify = new(username);
+		byte[] mensajeJson = Encoding.UTF8.GetBytes(username is null ? "" : identify.ToString());
+		await socket.SendAsync(mensajeJson);
 		return true;
 	}
 	catch
