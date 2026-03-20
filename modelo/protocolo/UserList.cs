@@ -9,12 +9,12 @@ public class UserList
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions Type {get;} = typeOptions.USER_LIST;
+    public typeOptions type {get;} = typeOptions.USER_LIST;
     
     /// <summary>
     /// username es el nombre de usuario.
     /// </summary>
-    public Dictionary<string, string> Usuarios { get; set; } = new();
+    public Dictionary<string, string> users { get; set; } = new();
     
     /// <summary>
     /// Constructor de mensaje UserList.
@@ -24,7 +24,7 @@ public class UserList
 	{
 		foreach(var usuario in usuarios)
 		{
-			Usuarios.Add(usuario.Username, usuario.Estado);
+			users.Add(usuario.Username, usuario.Estado);
 		}
     }
     public override string ToString()

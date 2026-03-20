@@ -17,6 +17,7 @@ if (await inicializar())
 {
 	stream = servidor.GetStream();
 	bool primerMensaje = true;
+	bool conexionViva = true;
 	_ = Task.Run(async () =>
 		{
 			byte[] bufferRecepcion = new byte[2048];
@@ -50,28 +51,22 @@ if (await inicializar())
 				Console.WriteLine("\nConexión perdida con el servidor: " + e.Message);
 			}
 		});
-		while (!(mensajeCrudo is null ? "" : mensajeCrudo).Equals("salir"))
-		{
-			try
-			{
-				if(primerMensaje) Thread.Sleep(500);
-				Console.Write($"\r>> ");
-				mensajeCrudo = Console.ReadLine();
-				byte[] mensajeJson = Encoding.UTF8.GetBytes(mensajeCrudo is null ? "" : mensajeCrudo);
-				await stream.WriteAsync(mensajeJson);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine("\nConexión perdida con el servidor." + e.Message);
-				break;
-			}
+	//  si no le pongo una pausita,
+	//  imprime primero el prompt que la bienvenida.
+	if (primerMensaje) Thread.Sleep(500); 
+	
+		while (!(mensajeCrudo is null ? "" : mensajeCrudo).Equals("salir") && conexionViva)
+		{	
+			Console.Write($"\r>> ");
+			mensajeCrudo = Console.ReadLine();
+			conexionViva= await enviarMensajePublico(mensajeCrudo);
 		}
 }
 
 Console.Read();
 
 async Task<bool> inicializar()
-	{
+{
 	if (args.Length == 2)
 	{
 		if (!IPAddress.TryParse(args[0], out ipServidor))
@@ -87,19 +82,20 @@ async Task<bool> inicializar()
 			" segundo argumento no es un entero. Se usará el puerto default 1111");
 			puerto = 1111; //sin esto, el tryparse le plancha un 0 al puerto.
 		}
-	}else if (args.Length > 0)
+	}
+	else if (args.Length > 0)
 	{
-		Console.WriteLine($"Este programa requiere 2 argumentos:{Environment.NewLine}" 
-		+$"una ip válida que apunte al servidor {Environment.NewLine}"
-		+$"el puerto que el servidor haya abierto para el cliente. {Environment.NewLine}"
-		+$"Si no se proporcionan los dos o no se indican datos válidos, {Environment.NewLine}"
-		+$"se usarán la ip default 127.0.0.1 y el puerto default 1111. {Environment.NewLine}");
+		Console.WriteLine($"Este programa requiere 2 argumentos:{Environment.NewLine}"
+		+ $"una ip válida que apunte al servidor {Environment.NewLine}"
+		+ $"el puerto que el servidor haya abierto para el cliente. {Environment.NewLine}"
+		+ $"Si no se proporcionan los dos o no se indican datos válidos, {Environment.NewLine}"
+		+ $"se usarán la ip default 127.0.0.1 y el puerto default 1111. {Environment.NewLine}");
 	}
 	Console.WriteLine("Inicializando chat con el servidor "
 	+ ipServidor.ToString() + " en el puerto " + puerto.ToString());
 	System.Console.Write("Ingrese el username deseado (máximo 8 characteres): ");
 	string username = Console.ReadLine();
-	if(username.Length>8) username = username.Substring(0, 8);
+	if (username.Length > 8) username = username.Substring(0, 8);
 	try
 	{
 		await servidor.ConnectAsync(ipServidor, puerto);
@@ -118,3 +114,19 @@ async Task<bool> inicializar()
 		return false;
 	}
 }
+
+async Task<bool> enviarMensajePublico(String mensajePublicoCrudo)
+	{
+		try
+		{
+			PublicText mensajePublico = new(mensajePublicoCrudo);
+			byte[] mensajeJson = Encoding.UTF8.GetBytes(mensajePublico.ToString());
+			await stream.WriteAsync(mensajeJson);
+			return true;
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine("\nConexión perdida con el servidor." + e.Message);
+			return false;
+		}
+	}

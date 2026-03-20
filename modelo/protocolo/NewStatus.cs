@@ -2,33 +2,33 @@ using System.Text.Json;
 namespace chat.modelo.protocolo;
 
 /// <summary>
-/// Esta clase representa un mensaje de indentificacion.
+/// Esta clase representa un mensaje de NEW_STATUS.
 /// </summary>
-public class NewStatus
+/// <remarks>
+/// Constructor de mensaje NEW_STATUS.
+/// </remarks>
+/// <param name="username">El nombre de usuario.</param>
+/// <param name="estado">El nuevo STATUS del usuario.</param>
+public class NewStatus(string username,string estado)
 {
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions type {get;} = typeOptions.IDENTIFY;
-    
-    /// <summary>
-    /// username es el nombre de usuario.
+    public typeOptions type {get;} = typeOptions.NEW_STATUS;
+	/// <summary>
+	/// username es el nombre de usuario.
+	/// </summary>
+	public string username { get; set; } = username;
+
+	/// <summary>
+    /// Estado es el nuevo estado del usuario.
     /// </summary>
-    public string username {get;set;}
-    
-    /// <summary>
-    /// Constructor de mensaje IDENTIFY.
-    /// </summary>
-    /// <param name="username">El nombre de usuario.</param>
-    public NewStatus(string username)
-    {
-        this.username = username;
-    }
-    public override string ToString()
-    {
-        return JsonSerializer.Serialize(this);
-    }
-    public string toJson()
+    public String status { get; set; } = estado;
+	public override string ToString()
+	{
+		return JsonSerializer.Serialize(this);
+	}
+    public string ToJson()
     {
         return JsonSerializer.Serialize(this);
     }

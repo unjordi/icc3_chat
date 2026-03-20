@@ -8,6 +8,7 @@ public enum typeOptions
 	RESPONSE,
 	NEW_USER,
 	STATUS,
+	NEW_STATUS,
 	USERS,
 	USER_LIST,
 	TEXT,

@@ -5,39 +5,33 @@ namespace chat.modelo.protocolo;
 /// <summary>
 /// Esta clase representa un mensaje de RESPONSE.
 /// </summary>
-public class Response
+/// <remarks>
+/// Constructor de mensaje RESPONSE.
+/// </remarks>
+/// <param name="username">El nombre de usuario.</param>
+public class Response(operationOptions operation, resultOptions result, string extra)
 {
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
     public typeOptions type {get;} = typeOptions.RESPONSE;
-    
-    /// <summary>
-    /// operation es el tipo de mensaje al que se está respondiendo.
-    /// </summary>
-    public operationOptions operation {get;}
 
-    /// <summary>
-    /// result representa el éxito o fracaso.
-    /// </summary>
-    public resultOptions result {get;}
+	/// <summary>
+	/// operation es el tipo de mensaje al que se está respondiendo.
+	/// </summary>
+	public operationOptions operation { get; } = operation;
 
-    /// <summary>
-    /// extra es el contenido adicional.
-    /// </summary>
-    public string extra {get;set;}
+	/// <summary>
+	/// result representa el éxito o fracaso.
+	/// </summary>
+	public resultOptions result { get; } = result;
 
-    /// <summary>
-    /// Constructor de mensaje RESPONSE.
-    /// </summary>
-    /// <param name="username">El nombre de usuario.</param>
-    public Response(operationOptions operation, resultOptions result,string extra)
-    {
-        this.operation = operation;
-        this.result = result;
-        this.extra  = extra;
-    }
-    public override string ToString()
+	/// <summary>
+	/// extra es el contenido adicional.
+	/// </summary>
+	public string extra { get; set; } = extra;
+
+	public override string ToString()
     {
         return JsonSerializer.Serialize(this);
     }

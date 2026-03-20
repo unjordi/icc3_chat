@@ -4,31 +4,27 @@ namespace chat.modelo.protocolo;
 /// <summary>
 /// Esta clase representa un mensaje de indentificacion.
 /// </summary>
-public class Identify
+/// <remarks>
+/// Constructor de mensaje IDENTIFY.
+/// </remarks>
+/// <param name="username">El nombre de usuario.</param>
+public class Identify(string username)
 {
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions type => typeOptions.IDENTIFY;
-    
-    /// <summary>
-    /// username es el nombre de usuario.
-    /// </summary>
-    public string username {get;set;}
-    
-    /// <summary>
-    /// Constructor de mensaje IDENTIFY.
-    /// </summary>
-    /// <param name="username">El nombre de usuario.</param>
-    public Identify(string username)
-    {
-        this.username = username;
-    }
-    public override string ToString()
+    public static typeOptions type => typeOptions.IDENTIFY;
+
+	/// <summary>
+	/// username es el nombre de usuario.
+	/// </summary>
+	public string username { get; set; } = username;
+
+	public override string ToString()
     {
         return JsonSerializer.Serialize(this);
     }
-    public string toJson()
+    public string ToJson()
     {
         return JsonSerializer.Serialize(this);
     }

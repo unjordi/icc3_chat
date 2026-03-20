@@ -18,7 +18,7 @@ public class Usuario
 	public String Username { get; set; } = "";
 	
 	/// <summary>
-    /// username es el nombre de usuario.
+    /// Estado es el STATUS del usuario.
     /// </summary>
     public String Estado { get; set; } = "";
     
