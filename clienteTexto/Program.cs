@@ -41,10 +41,8 @@ if (await inicializar())
 						primerMensaje = false;
 					}
 					else
-					{
-						Response respuesta = JsonSerializer.Deserialize<Response>
-						(Encoding.UTF8.GetString(bufferRecepcion, 0, bytesRecibidos));
-						System.Console.WriteLine("[SISTEMA]>>"+respuesta.ToString());
+					{ 
+						System.Console.WriteLine(Encoding.UTF8.GetString(bufferRecepcion, 0, bytesRecibidos));
 						Console.Write($"\r>> ");
 					}
 				}
