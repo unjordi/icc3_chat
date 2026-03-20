@@ -67,7 +67,6 @@ if (await inicializar())
 		}
 }
 
-
 Console.Read();
 
 async Task<bool> inicializar()

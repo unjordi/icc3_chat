@@ -15,3 +15,5 @@ jobs:
       - uses: unjordi/icc3_chat@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          TARGET_FILE: README.md

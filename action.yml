@@ -18,7 +18,7 @@ inputs:
     required: false
   COMMIT_MSG:
     description: "Mensaje del commit"
-    default: ":zap: Update README with the recent activity"
+    default: ":zap: Actualizar README con los últimos commits"
     required: false
   MAX_LINES:
     description: "Máximo de lineas a insertar en el README"
@@ -34,7 +34,7 @@ inputs:
     required: false
   FILTER_EVENTS:
     description: "Eventos a mostrar"
-    default: "IssueCommentEvent,IssuesEvent,PullRequestEvent,ReleaseEvent"
+    default: "PushEvent,ReleaseEvent,CommitCommentEvent"
     required: false
 
 branding:
