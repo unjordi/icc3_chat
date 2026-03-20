@@ -10,6 +10,7 @@ int puerto = 1111;
 TcpListener servidor;
 Lock _lock = new();
 List<Usuario> usuarios = new();
+List<ChatRoom> cuartos = new();
 inicializar();
 
 while (true)
@@ -81,6 +82,10 @@ async Task ManejarConexionAsincrona(TcpClient cliente)
 							case "PUBLIC_TEXT":
 								PublicTextFrom mensajePublico = new(noob.Username, jsonSinTipo.RootElement.GetProperty("text").GetString());
 								await Pregonar(noob.Username,mensajePublico.ToString());
+								break;
+							case "NEW_ROOM":
+								string nombreCuartoNuevo = jsonSinTipo.RootElement.GetProperty("roomname").GetString() ?? "";
+								await ManejarNuevoCuarto(noob, nombreCuartoNuevo);
 								break;
 							case "STATUS":
 								string nuevoEstado = jsonSinTipo.RootElement.GetProperty("status").GetString() ?? "";
@@ -237,15 +242,39 @@ async Task EnviarRespuestaInvalida(Usuario solicitante)
 async Task Desconectar(Usuario solicitante)
 {
 	Disconected desconexion = new(solicitante.Username);
-    byte[] data = Encoding.UTF8.GetBytes(desconexion.ToString());
+	byte[] data = Encoding.UTF8.GetBytes(desconexion.ToString());
 	await solicitante.Conexion.GetStream().WriteAsync(data);
 	lock (_lock)
 	{
 		Usuario moribundo = usuarios.FirstOrDefault(u => u.Username == solicitante.Username);
 		if (moribundo != null) usuarios.Remove(moribundo);
 	}
-	await Pregonar("SISTEMA",desconexion.ToString());
+	await Pregonar("SISTEMA", desconexion.ToString());
 	Console.ForegroundColor = ConsoleColor.Red;
 	Console.WriteLine($"Cliente desconectado! {solicitante.Username}");
-	Console.ForegroundColor = ConsoleColor.Green; 
+	Console.ForegroundColor = ConsoleColor.Green;
+}
+/// <summary>
+/// Crea un nuevo cuarto y une al creador automáticamente.
+/// </summary>
+async Task ManejarNuevoCuarto(Usuario creador, string nombreSala)
+{
+	if (nombreSala.Length > 16) { /* Enviar INVALID */ return; }
+
+	lock (_lock)
+	{
+		if (cuartos.Any(c => c.NombreCuarto == nombreSala))
+		{
+			_ = EnviarRespuesta(creador, operationOptions.NEW_ROOM, resultOptions.ROOM_ALREADY_EXISTS, nombreSala);
+			return;
+		}
+		cuartos.Add(new ChatRoom(nombreSala, creador));
+	}
+	await EnviarRespuesta(creador, operationOptions.NEW_ROOM, resultOptions.SUCCESS, nombreSala);
+}
+// Método auxiliar para simplificar respuestas
+async Task EnviarRespuesta(Usuario u, operationOptions op, resultOptions res, string extra)
+{
+    Response r = new(op, res, extra);
+    await u.Conexion.GetStream().WriteAsync(Encoding.UTF8.GetBytes(r.toJson()));
 }
