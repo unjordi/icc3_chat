@@ -500,7 +500,7 @@ Cuando todos los usuarios de un cuarto lo hayan abandonado, el cuarto
 desaparece.
 
 Un usuario siempre se conecta con el estado `ACTIVE`.
-
+ 
 Si un usuario no se ha identificado no puede hacer nada hasta que se
 identifique; todo mensaje distinto de `IDENTIFY` se responderá con lo siguiente:
 

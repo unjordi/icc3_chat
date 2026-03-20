@@ -9,7 +9,7 @@ public class NewUser
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions type {get;} = typeOptions.IDENTIFY;
+    public typeOptions type {get;} = typeOptions.NEW_USER;
     
     /// <summary>
     /// username es el nombre de usuario.

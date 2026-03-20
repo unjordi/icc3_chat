@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace modelo;
+namespace chat.modelo;
 
 /// <summary>
 /// Esta clase representa un usuario y sus acciones.
@@ -12,16 +12,21 @@ public class Usuario
     /// </summary>
     public Guid GUID { get; private set; }
 
-    /// <summary>
+	/// <summary>
+	/// username es el nombre de usuario.
+	/// </summary>
+	public String Username { get; set; } = "";
+	
+	/// <summary>
     /// username es el nombre de usuario.
     /// </summary>
-    public String username { get; set; } = "";
+    public String Estado { get; set; } = "";
     
     /// <summary>
-    /// conexion es el socket con el que el 
+    /// conexion contiene el socket con el que el 
     /// servidor se comunica con el usuario.
     /// </summary>
-    public TcpClient conexion { get; set; } 
+    public TcpClient Conexion { get; set; } 
 
     /// <summary>
     /// Constructor de usuarios.
@@ -30,8 +35,9 @@ public class Usuario
     /// <param name="conexion">socket para conexion con el usuario</param>
     public Usuario(String username,TcpClient sock )
     {
-        this.username = username;
-        conexion = sock;
+		Username = username;
+		Estado = "ACTIVE"; //Todos los usuarios nacen vivos
+        Conexion = sock;
         GUID = Guid.NewGuid();
     }
    

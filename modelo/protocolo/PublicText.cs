@@ -9,20 +9,20 @@ public class PublicText
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions type {get;} = typeOptions.IDENTIFY;
+    public typeOptions type {get;} = typeOptions.PUBLIC_TEXT;
+    
+	/// <summary>
+    /// text es el mensaje enviado
+    /// </summary>
+    public string text { get; set; }
     
     /// <summary>
-    /// username es el nombre de usuario.
+    /// Constructor de mensaje Text.
     /// </summary>
-    public string username {get;set;}
-    
-    /// <summary>
-    /// Constructor de mensaje PublicText.
-    /// </summary>
-    /// <param name="username">El nombre de usuario.</param>
-    public PublicText(string username)
+    /// <param name="mensaje">El mensaje a enviar.</param>
+    public PublicText(string mensaje)
     {
-        this.username = username;
+		this.text = mensaje;
     }
     public override string ToString()
     {

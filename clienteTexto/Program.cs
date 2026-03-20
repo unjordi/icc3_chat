@@ -16,33 +16,33 @@ string mensajeCrudo = "";
 if (await inicializar())
 {
 	stream = servidor.GetStream();
+	bool primerMensaje = true;
 	_ = Task.Run(async () =>
 		{
 			byte[] bufferRecepcion = new byte[2048];
 			try
 			{
-				int i = 0;
 				while (true)
 				{
 					// This stays waiting for the server, even if the user is typing
 					int bytesRecibidos = await stream.ReadAsync(bufferRecepcion, 0, bufferRecepcion.Length);
 					if (bytesRecibidos == 0) break;
-					if (i == 0)
+					if (primerMensaje)
 					{
 						Response respuesta = JsonSerializer.Deserialize<Response>
 						(Encoding.UTF8.GetString(bufferRecepcion, 0, bytesRecibidos));
-						if(respuesta.operation == operationOptions.IDENTIFY && respuesta.result == resultOptions.SUCCESS)
+						if (respuesta.operation == operationOptions.IDENTIFY && respuesta.result == resultOptions.SUCCESS)
 						{
-							Console.WriteLine($"\r\t|Bienvenido al chat, {respuesta.extra}");
+							Console.WriteLine($"\r|\tBienvenido al chat, {respuesta.extra}\t|\r");
 						}
+						primerMensaje = false;
 					}
 					else
 					{
 						Response respuesta = JsonSerializer.Deserialize<Response>
 						(Encoding.UTF8.GetString(bufferRecepcion, 0, bytesRecibidos));
-						Console.Write("Ingrese el texto a enviar: ");
+						Console.Write($"\rmensaje>> ");
 					}
-					i++;
 				}
 			}
 			catch (Exception e)
@@ -54,7 +54,8 @@ if (await inicializar())
 		{
 			try
 			{
-				Console.WriteLine("Ingrese el texto a enviar.");
+				if(primerMensaje) Thread.Sleep(500);
+				Console.Write($"\r>> ");
 				mensajeCrudo = Console.ReadLine();
 				byte[] mensajeJson = Encoding.UTF8.GetBytes(mensajeCrudo is null ? "" : mensajeCrudo);
 				await stream.WriteAsync(mensajeJson);
@@ -96,14 +97,16 @@ async Task<bool> inicializar()
 	}
 	Console.WriteLine("Inicializando chat con el servidor "
 	+ ipServidor.ToString() + " en el puerto " + puerto.ToString());
-	System.Console.Write("Ingrese el username deseado: ");
+	System.Console.Write("Ingrese el username deseado (máximo 8 characteres): ");
 	string username = Console.ReadLine();
+	if(username.Length>8) username = username.Substring(0, 8);
 	try
 	{
 		await servidor.ConnectAsync(ipServidor, puerto);
 		stream = servidor.GetStream();
 		Identify identify = new(username);
 		byte[] mensajeJson = Encoding.UTF8.GetBytes(username is null ? "" : identify.ToString());
+		System.Console.WriteLine(identify.ToString());
 		await stream.WriteAsync(mensajeJson);
 		return true;
 	}

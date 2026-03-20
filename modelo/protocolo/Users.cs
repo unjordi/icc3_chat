@@ -9,21 +9,8 @@ public class Users
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions type {get;} = typeOptions.IDENTIFY;
+    public typeOptions type {get;} = typeOptions.USERS;
     
-    /// <summary>
-    /// username es el nombre de usuario.
-    /// </summary>
-    public string username {get;set;}
-    
-    /// <summary>
-    /// Constructor de mensaje Users.
-    /// </summary>
-    /// <param name="username">El nombre de usuario.</param>
-    public Users(string username)
-    {
-        this.username = username;
-    }
     public override string ToString()
     {
         return JsonSerializer.Serialize(this);

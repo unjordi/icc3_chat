@@ -1,5 +1,4 @@
 # `ICC3 Chat 💬 de Jordi Serra`
-======================
 
 [![GitHub Repo](https://img.shields.io/badge/Repo-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/unjordi/icc3_chat)
 [![GitHub license](https://img.shields.io/github/license/unjordi/icc3_chat?style=for-the-badge)](https://github.com/unjordi/icc3_chat/blob/main/LICENSE)
@@ -35,8 +34,8 @@ si ya se ha creado el contenedor con ese nombre previamente, el siguiente comand
 	docker run -it  -p 1112:1112 --name servidorChatDocker servidorchat
 
 # 🛠 para ejecutar el cliente de consola:
-reemplazar 127.0.0.1 por la ip del servidor en los siguientes comandos:
-reemplazar 1112 por el puerto deseado en los siguientes comandos:
+reemplazar 127.0.0.1 por la ip del servidor en los siguientes comandos;  
+reemplazar 1112 por el puerto deseado en los siguientes comandos:  
 se ejecuta así la primera vez:
 
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)

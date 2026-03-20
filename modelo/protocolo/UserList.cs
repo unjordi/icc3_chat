@@ -9,20 +9,23 @@ public class UserList
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions type {get;} = typeOptions.IDENTIFY;
+    public typeOptions Type {get;} = typeOptions.USER_LIST;
     
     /// <summary>
     /// username es el nombre de usuario.
     /// </summary>
-    public string username {get;set;}
+    public Dictionary<string, string> Usuarios { get; set; } = new();
     
     /// <summary>
     /// Constructor de mensaje UserList.
     /// </summary>
-    /// <param name="username">El nombre de usuario.</param>
-    public UserList(string username)
-    {
-        this.username = username;
+    /// <param name="Usuarios">El nombre de usuario.</param>
+    public UserList(List<Usuario> usuarios)
+	{
+		foreach(var usuario in usuarios)
+		{
+			Usuarios.Add(usuario.Username, usuario.Estado);
+		}
     }
     public override string ToString()
     {
