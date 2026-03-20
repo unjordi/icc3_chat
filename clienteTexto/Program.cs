@@ -1,31 +1,74 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using chat.modelo.protocolo;
 
 //Argumento 1: puerto para conectarse.
 //Argumento 2: ip del servidor
-Socket socket;
+TcpClient servidor = new();
+NetworkStream stream = null;
+
 int puerto = 1111;
-IPAddress? ipServidor = IPAddress.Parse("127.0.0.1");
-String? mensajeCrudo = "";
-socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+IPAddress ipServidor = IPAddress.Parse("127.0.0.1");
+string mensajeCrudo = "";
 
-if(! await inicializar())
+if (await inicializar())
 {
-	return;
+	stream = servidor.GetStream();
+	_ = Task.Run(async () =>
+		{
+			byte[] bufferRecepcion = new byte[2048];
+			try
+			{
+				int i = 0;
+				while (true)
+				{
+					// This stays waiting for the server, even if the user is typing
+					int bytesRecibidos = await stream.ReadAsync(bufferRecepcion, 0, bufferRecepcion.Length);
+					if (bytesRecibidos == 0) break;
+					if (i == 0)
+					{
+						Response respuesta = JsonSerializer.Deserialize<Response>
+						(Encoding.UTF8.GetString(bufferRecepcion, 0, bytesRecibidos));
+						if(respuesta.operation == operationOptions.IDENTIFY && respuesta.result == resultOptions.SUCCESS)
+						{
+							Console.WriteLine($"\r\t|Bienvenido al chat, {respuesta.extra}");
+						}
+					}
+					else
+					{
+						Response respuesta = JsonSerializer.Deserialize<Response>
+						(Encoding.UTF8.GetString(bufferRecepcion, 0, bytesRecibidos));
+						Console.Write("Ingrese el texto a enviar: ");
+					}
+					i++;
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("\nConexión perdida con el servidor: " + e.Message);
+			}
+		});
+		while (!(mensajeCrudo is null ? "" : mensajeCrudo).Equals("salir"))
+		{
+			try
+			{
+				Console.WriteLine("Ingrese el texto a enviar.");
+				mensajeCrudo = Console.ReadLine();
+				byte[] mensajeJson = Encoding.UTF8.GetBytes(mensajeCrudo is null ? "" : mensajeCrudo);
+				await stream.WriteAsync(mensajeJson);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("\nConexión perdida con el servidor." + e.Message);
+				break;
+			}
+		}
 }
-while (!(mensajeCrudo is null ? "" : mensajeCrudo).Equals("salir"))
-{
-	System.Console.WriteLine("Ingrese el texto a enviar.");
-	mensajeCrudo = Console.ReadLine();
-	byte[] mensajeJson = Encoding.UTF8.GetBytes(mensajeCrudo is null ? "" : mensajeCrudo);
-	await socket.SendAsync(mensajeJson);
 
-}
+
 Console.Read();
-socket.Close();
-
 
 async Task<bool> inicializar()
 	{
@@ -52,18 +95,17 @@ async Task<bool> inicializar()
 		+$"Si no se proporcionan los dos o no se indican datos válidos, {Environment.NewLine}"
 		+$"se usarán la ip default 127.0.0.1 y el puerto default 1111. {Environment.NewLine}");
 	}
-	System.Console.Write("Ingrese el username deseado: ");
-	string? username = Console.ReadLine();
 	Console.WriteLine("Inicializando chat con el servidor "
-	+ipServidor.ToString()+" en el puerto "+puerto.ToString());
-	socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-	IPEndPoint servidor = new (ipServidor, puerto);
+	+ ipServidor.ToString() + " en el puerto " + puerto.ToString());
+	System.Console.Write("Ingrese el username deseado: ");
+	string username = Console.ReadLine();
 	try
 	{
-		socket.Connect(servidor);
+		await servidor.ConnectAsync(ipServidor, puerto);
+		stream = servidor.GetStream();
 		Identify identify = new(username);
 		byte[] mensajeJson = Encoding.UTF8.GetBytes(username is null ? "" : identify.ToString());
-		await socket.SendAsync(mensajeJson);
+		await stream.WriteAsync(mensajeJson);
 		return true;
 	}
 	catch

@@ -9,7 +9,7 @@ public class Identify
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions type {get;} = typeOptions.IDENTIFY;
+    public typeOptions type => typeOptions.IDENTIFY;
     
     /// <summary>
     /// username es el nombre de usuario.

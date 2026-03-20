@@ -21,14 +21,14 @@ public class Usuario
     /// conexion es el socket con el que el 
     /// servidor se comunica con el usuario.
     /// </summary>
-    public Socket conexion { get; set; } 
+    public TcpClient conexion { get; set; } 
 
     /// <summary>
     /// Constructor de usuarios.
     /// </summary>
     /// <param name="username">El nombre de usuario.</param>
     /// <param name="conexion">socket para conexion con el usuario</param>
-    public Usuario(String username,Socket sock )
+    public Usuario(String username,TcpClient sock )
     {
         this.username = username;
         conexion = sock;
