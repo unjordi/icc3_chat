@@ -2,23 +2,23 @@ using System.Text.Json;
 namespace chat.modelo.protocolo;
 
 /// <summary>
-/// Esta clase representa un mensaje de indentificacion.
+/// Esta clase representa un mensaje de cambio de estado
 /// </summary>
 /// <remarks>
-/// Constructor de mensaje IDENTIFY.
+/// Constructor de mensaje Status
 /// </remarks>
-/// <param name="username">El nombre de usuario.</param>
-public class Status(string username)
+/// <param name="nuevoEstado">El nuevo estado deseado por el usuario.</param>
+public class Status(string nuevoEstado)
 {
     /// <summary>
     /// type es el tipo de mensaje.
     /// </summary>
-    public typeOptions type {get;} = typeOptions.IDENTIFY;
+    public typeOptions type {get;} = typeOptions.STATUS;
 
 	/// <summary>
-	/// username es el nombre de usuario.
+	/// status es el nuevo estado del usuario.
 	/// </summary>
-	public string username { get; set; } = username;
+	public string status { get; set; } = nuevoEstado;
 
 	public override string ToString()
     {

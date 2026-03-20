@@ -78,27 +78,33 @@ async Task ManejarConexionAsincrona(TcpClient cliente)
 
 						switch (tipoMensaje)
 						{
+							case "PUBLIC_TEXT":
+								PublicTextFrom mensajePublico = new(noob.Username, jsonSinTipo.RootElement.GetProperty("text").GetString());
+								await Pregonar(noob.Username,mensajePublico.ToString());
+								break;
 							case "STATUS":
 								string nuevoEstado = jsonSinTipo.RootElement.GetProperty("status").GetString() ?? "";
 								await ManejarCambioEstado(noob, nuevoEstado);
 								break;
-
+							case "DISCONNECT":
+								await Desconectar(noob);
+								break;
 							case "USERS":
 								await EnviarListaUsuarios(noob);
 								break;
-
-							// Add more cases here (TEXT, NEW_ROOM, etc.)
-							
 							default:
-								// If unknown type, protocol says disconnect
-								throw new Exception("Tipo de mensaje no reconocido");
+								// si no sé qué hacer, me muero.
+								System.Console.WriteLine("tipo de mensaje fuera de protocolo, abortando.");
+								await EnviarRespuestaInvalida(noob);
+								throw new Exception("Tipo de mensaje no reconocido: "+JsonCrudo);
 						}
 					}
-					catch 
+					catch (Exception ew)
 					{
+						System.Console.WriteLine(ew.Message);
 						var error = new Response(operationOptions.INVALID, resultOptions.INVALID, "");
 						await stream.WriteAsync(Encoding.UTF8.GetBytes(error.toJson()));
-						break; // Disconnect
+						continue; // Le da otra oportunidad!
 					}
 				}
 			}
@@ -111,16 +117,10 @@ async Task ManejarConexionAsincrona(TcpClient cliente)
 		{
 			if (noob != null)
 			{
-				lock (_lock)
-				{
-					Usuario moribundo = usuarios.FirstOrDefault(u => u.Username == noob.Username);
-					if (moribundo != null) usuarios.Remove(moribundo);
-				}
-				await Pregonar($"{noob.Username} ha salido del chat.", "SISTEMA");
+				await Desconectar(noob);
 			}
 		}
-		Console.ForegroundColor = ConsoleColor.Red;
-		Console.WriteLine($"Cliente desconectado! {aceptado.RemoteEndPoint}");
+		
 	}
 }
 async Task<Usuario> RecibirUsuarioNuevoAsync(TcpClient clientenuevo, byte[] buffer,int longitudMensaje)
@@ -139,6 +139,7 @@ async Task<Usuario> RecibirUsuarioNuevoAsync(TcpClient clientenuevo, byte[] buff
 		Response respuesta = new(operationOptions.IDENTIFY, resultOptions.SUCCESS, saludo.username);
 		byte[] responseBytes = Encoding.UTF8.GetBytes(respuesta.ToString());
 		await stream.WriteAsync(responseBytes, 0, responseBytes.Length);
+		await Pregonar(novato.Username,new NewUser(novato.Username).ToString());
 	}
 	catch (Exception e)
 	{
@@ -147,11 +148,19 @@ async Task<Usuario> RecibirUsuarioNuevoAsync(TcpClient clientenuevo, byte[] buff
 	return novato;
 }
 
-async Task Pregonar(string remitente,string mensaje)
+async Task Pregonar(string remitente,string mensajeJson)
 {
-	PublicTextFrom nuevoMensaje = new(remitente,mensaje);
-	byte[] data = Encoding.UTF8.GetBytes($"{nuevoMensaje.ToString}");
-
+	byte[] data = Encoding.UTF8.GetBytes($"{mensajeJson}");
+	if (remitente.Equals("SISTEMA"))
+	{
+		Console.CursorLeft = Console.BufferWidth - (int)("[{remitente}]> {mensajeJson}".Length*2.5);
+		Console.WriteLine($"[{remitente}]> {mensajeJson}");
+	}
+	else
+	{
+		Console.WriteLine($"[{remitente}]> {mensajeJson}");
+	}
+	
 	// dice el internet (la documentación) que si no itero sobre una copia,
 	// me cae la policía de la concurrencia y pasan cosas malas.
 	// y que para sacar la copia tengo que prevenir las condiciones de carrera.
@@ -170,7 +179,7 @@ async Task Pregonar(string remitente,string mensaje)
 		}
 		catch
 		{
-			Console.WriteLine($"Falló el envío de cambio de status a {usuario.Username}");
+			Console.WriteLine($"Falló el envío de mensaje a {usuario.Username}");
 		}
 	}
 }
@@ -179,16 +188,18 @@ async Task Pregonar(string remitente,string mensaje)
 /// Cambia el estado de un usuario y notifica a los demás.
 /// </summary>
 /// <param name="usuario">El usuario que cambia de estado.</param>
-/// <param name="estado">El nuevo estado (ACTIVE, AWAY, BUSY).</param>
+/// <param name="estado">El nuevo estado.</param>
 async Task ManejarCambioEstado(Usuario usuario, string estado)
 {
+	if (estado != "ACTIVE" && estado != "AWAY" && estado != "BUSY")
+    {
+		await EnviarRespuestaInvalida(usuario);
+    }
     usuario.Estado = estado;
-    // Crear el mensaje NEW_STATUS para los demás
-    var notificacion = new { type = "NEW_STATUS", username = usuario.Username, status = estado };
-    string jsonNotif = JsonSerializer.Serialize(notificacion);
-    
+	// Crear el mensaje NEW_STATUS para los demás
+	NewStatus newStatus = new(usuario.Username, estado);
     // Broadcast a todos menos al interesado
-    await BroadcastPersonalizado(jsonNotif, usuario.GUID);
+    await Pregonar(usuario.Username, newStatus.ToString());
 }
 
 /// <summary>
@@ -197,13 +208,44 @@ async Task ManejarCambioEstado(Usuario usuario, string estado)
 /// <param name="solicitante">El usuario que pidió la lista.</param>
 async Task EnviarListaUsuarios(Usuario solicitante)
 {
-    List<Usuario> listaActual;
-    lock (_lock)
-    {
-        listaActual = usuarios.ToList();
-    }
+	List<Usuario> listaActual;
+	lock (_lock)
+	{
+		listaActual = usuarios.ToList();
+	}
+	UserList respuesta = new UserList(listaActual);
+	byte[] data = Encoding.UTF8.GetBytes(respuesta.ToString());
+	await solicitante.Conexion.GetStream().WriteAsync(data);
+}
 
-    UserList respuesta = new UserList(listaActual);
-    byte[] data = Encoding.UTF8.GetBytes(respuesta.toJson());
-    await solicitante.Conexion.GetStream().WriteAsync(data);
+/// <summary>
+/// Envía respuesta INVALID al usuario solicitante.
+/// </summary>
+/// <param name="solicitante">El usuario al que se responderá.</param>
+async Task EnviarRespuestaInvalida(Usuario solicitante)
+{
+	Response invalida = new(operationOptions.INVALID, resultOptions.INVALID, "");
+	byte[] data = Encoding.UTF8.GetBytes(invalida.ToString());
+	await solicitante.Conexion.GetStream().WriteAsync(data);
+	await Desconectar(solicitante);
+}
+
+/// <summary>
+/// Desconecta al usuario.
+/// </summary>
+/// <param name="solicitante">El usuario que se desconectó.</param>
+async Task Desconectar(Usuario solicitante)
+{
+	Disconected desconexion = new(solicitante.Username);
+    byte[] data = Encoding.UTF8.GetBytes(desconexion.ToString());
+	await solicitante.Conexion.GetStream().WriteAsync(data);
+	lock (_lock)
+	{
+		Usuario moribundo = usuarios.FirstOrDefault(u => u.Username == solicitante.Username);
+		if (moribundo != null) usuarios.Remove(moribundo);
+	}
+	await Pregonar("SISTEMA",desconexion.ToString());
+	Console.ForegroundColor = ConsoleColor.Red;
+	Console.WriteLine($"Cliente desconectado! {solicitante.Username}");
+	Console.ForegroundColor = ConsoleColor.Green; 
 }

@@ -34,7 +34,9 @@ if (await inicializar())
 						(Encoding.UTF8.GetString(bufferRecepcion, 0, bytesRecibidos));
 						if (respuesta.operation == operationOptions.IDENTIFY && respuesta.result == resultOptions.SUCCESS)
 						{
+							Console.ForegroundColor = ConsoleColor.Green;
 							Console.WriteLine($"\r|\tBienvenido al chat, {respuesta.extra}\t|\r");
+							Console.ForegroundColor = ConsoleColor.White;
 						}
 						primerMensaje = false;
 					}
@@ -42,7 +44,8 @@ if (await inicializar())
 					{
 						Response respuesta = JsonSerializer.Deserialize<Response>
 						(Encoding.UTF8.GetString(bufferRecepcion, 0, bytesRecibidos));
-						Console.Write($"\rmensaje>> ");
+						System.Console.WriteLine("[SISTEMA]>>"+respuesta.ToString());
+						Console.Write($"\r>> ");
 					}
 				}
 			}
@@ -120,13 +123,14 @@ async Task<bool> enviarMensajePublico(String mensajePublicoCrudo)
 		try
 		{
 			PublicText mensajePublico = new(mensajePublicoCrudo);
+			//System.Console.WriteLine(mensajePublico.ToString());
 			byte[] mensajeJson = Encoding.UTF8.GetBytes(mensajePublico.ToString());
 			await stream.WriteAsync(mensajeJson);
 			return true;
 		}
 		catch (Exception e)
 		{
-			Console.WriteLine("\nConexión perdida con el servidor." + e.Message);
+			Console.WriteLine("\nConexión perdida con el servidor. " + e.Message);
 			return false;
 		}
 	}
