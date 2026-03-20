@@ -1,0 +1,17 @@
+name: Update README
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+jobs:
+  build:
+    name: Actualiza el README del repo con la actividad reciente
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: unjordi/icc3_chat@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
